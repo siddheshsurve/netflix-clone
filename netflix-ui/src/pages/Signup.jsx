@@ -9,7 +9,7 @@ export default function Signup() {
     <Container>
       <BackgroundImage />
       <div className="content">
-        <Header />
+        <Header login />
         <div className="body flex column a-center j-center">
           <div className="text flex column">
             <h1>Unlimited movies, TV shows and more</h1>
@@ -23,7 +23,7 @@ export default function Signup() {
             <input type="password" placeholder='Password' name='password' />
             <button>Get Started</button>
           </div>
-          <button>Login</button>
+          <button>Log In</button>
         </div>
       </div>
     </Container>
@@ -40,6 +40,6 @@ const Container = styled.div`
     height: 100vh;
     width: 100vw;
     display: grid;
-    grid-template-rows: 15vh 85vw;
+    grid-template-rows: 15vh 85vh;
   }
 `;
