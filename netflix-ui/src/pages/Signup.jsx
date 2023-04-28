@@ -1,12 +1,15 @@
-import React from 'react'
+import React, { useState } from 'react'
 import styled from "styled-components"
 import BackgroundImage from '../components/BackgroundImage';
 import Header from '../components/Header';
 
 
 export default function Signup() {
+
+  const [showPassword, setShowPassword] = useState(false);
+
   return (
-    <Container>
+    <Container showPassword={showPassword}>
       <BackgroundImage />
       <div className="content">
         <Header login />
@@ -19,15 +22,19 @@ export default function Signup() {
             </h6>
           </div>
           <div className="form">
-            <input type="email" placeholder='Email Address' name='email' />
-            <input type="password" placeholder='Password' name='password' />
-            <button>Get Started</button>
+            <input type="email" placeholder="Email Address" name="email" />
+            {showPassword && (
+              <input type="password" placeholder="Password" name="password" />
+            )}
+            {!showPassword && (
+              <button onClick={() => setShowPassword(true)}>Get Started</button>
+            )}
           </div>
           <button>Log In</button>
         </div>
       </div>
     </Container>
-  )
+  );
 }
 
 const Container = styled.div`
@@ -71,7 +78,7 @@ const Container = styled.div`
           border: none;
           cursor: pointer;
           color: white;
-          
+
           font-weight: bolder;
           font-size: 1.05rem;
         }
