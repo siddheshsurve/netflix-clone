@@ -1,19 +1,34 @@
-import React, { useState } from 'react'
-import styled from "styled-components"
-import BackgroundImage from '../components/BackgroundImage';
-import Header from '../components/Header';
-
+import {
+  createUserWithEmailAndPassword,
+  onAuthStateChanged,
+} from "firebase/auth";
+import { firebaseAuth } from "../utils/firebase-config";
+import React, { useState } from "react";
+import styled from "styled-components";
+import BackgroundImage from "../components/BackgroundImage";
+import Header from "../components/Header";
+import { useNavigate } from "react-router-dom";
 
 export default function Signup() {
-
+  const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
   const [formValues, setFormValues] = useState({
-    email : "",
-    password : "",
+    email: "",
+    password: "",
   });
-  const handleSignIn = async ()=> {
-    console.log(formValues);
-  }
+
+  const handleSignIn = async () => {
+    try {
+      const { email, password } = formValues;
+      await createUserWithEmailAndPassword(firebaseAuth, email, password);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  onAuthStateChanged(firebaseAuth, (currentUser) => {
+    if (currentUser) navigate("/");
+  });
 
   return (
     <Container showPassword={showPassword}>
@@ -29,37 +44,37 @@ export default function Signup() {
             </h6>
           </div>
           <div className="form">
-            <input 
-              type="email" 
-              placeholder="Email Address" 
-              name="email" 
-              value={formValues.email} 
-              onChange= {(e) =>
-                setFormValues( {
+            <input
+              type="email"
+              placeholder="Email Address"
+              name="email"
+              value={formValues.email}
+              onChange={(e) =>
+                setFormValues({
                   ...formValues,
                   [e.target.name]: e.target.value,
                 })
               }
             />
             {showPassword && (
-              <input 
-                type="password" 
-                placeholder="Password" 
-                name="password" 
-                value= {formValues.password}
+              <input
+                type="password"
+                placeholder="Password"
+                name="password"
+                value={formValues.password}
                 onChange={(e) =>
-                  setFormValues( {
+                  setFormValues({
                     ...formValues,
                     [e.target.name]: e.target.value,
                   })
-                } 
+                }
               />
             )}
             {!showPassword && (
               <button onClick={() => setShowPassword(true)}>Get Started</button>
             )}
           </div>
-          <button onClick={handleSignIn} >Sign Up</button>
+          <button onClick={handleSignIn}>Sign Up</button>
         </div>
       </div>
     </Container>
@@ -89,7 +104,8 @@ const Container = styled.div`
       }
       .form {
         display: grid;
-        grid-template-columns: ${({showPassword}) => showPassword ? "1fr 1fr" : "2fr 1fr"} ;
+        grid-template-columns: ${({ showPassword }) =>
+          showPassword ? "1fr 1fr" : "2fr 1fr"};
         width: 60%;
         input {
           color: black;
@@ -113,14 +129,14 @@ const Container = styled.div`
         }
       }
       button {
-          padding: 0.5rem 1rem;
-          background-color: #e50914;
-          border: none;
-          cursor: pointer;
-          color: white;
-          border-radius: 0.2rem;
-          font-weight: bolder;
-          font-size: 1.05rem;
+        padding: 0.5rem 1rem;
+        background-color: #e50914;
+        border: none;
+        cursor: pointer;
+        color: white;
+        border-radius: 0.2rem;
+        font-weight: bolder;
+        font-size: 1.05rem;
       }
     }
   }
