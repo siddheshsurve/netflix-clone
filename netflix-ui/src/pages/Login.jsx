@@ -1,28 +1,21 @@
-import {
-  onAuthStateChanged,
-  signInWithEmailAndPassword,
-} from "firebase/auth";
-import { firebaseAuth } from "../utils/firebase-config";
 import React, { useState } from "react";
 import styled from "styled-components";
+import { useNavigate } from "react-router-dom";
 import BackgroundImage from "../components/BackgroundImage";
 import Header from "../components/Header";
-import { useNavigate } from "react-router-dom";
+import { onAuthStateChanged, signInWithEmailAndPassword } from "firebase/auth";
+import { firebaseAuth } from "../utils/firebase-config";
 
-export default function Login() {
-
+function Login() {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const navigate = useNavigate();
-  const [formValues, setFormValues] = useState({
-    email: "",
-    password: "",
-  });
 
-  const handleLogIn = async () => {
+  const handleLogin = async () => {
     try {
-      const { email, password } = formValues;
       await signInWithEmailAndPassword(firebaseAuth, email, password);
-    } catch (err) {
-      console.log(err);
+    } catch (error) {
+      console.log(error.code);
     }
   };
 
@@ -42,34 +35,18 @@ export default function Login() {
             </div>
             <div className="container flex column">
               <input
-                type="email"
-                placeholder="Email Address"
-                name="email"
-                value={formValues.email}
-                onChange={(e) =>
-                  setFormValues({
-                    ...formValues,
-                    [e.target.name]: e.target.value,
-                  })
-                }
+                type="text"
+                placeholder="Email"
+                onChange={(e) => setEmail(e.target.value)}
+                value={email}
               />
-              
-                <input
-                  type="password"
-                  placeholder="Password"
-                  name="password"
-                  value={formValues.password}
-                  onChange={(e) =>
-                    setFormValues({
-                      ...formValues,
-                      [e.target.name]: e.target.value,
-                    })
-                  }
-                />
-              
-              
-                <button onClick={handleLogIn}>Log In</button>
-              
+              <input
+                type="password"
+                placeholder="Password"
+                onChange={(e) => setPassword(e.target.value)}
+                value={password}
+              />
+              <button onClick={handleLogin}>Login to your account</button>
             </div>
           </div>
         </div>
@@ -94,7 +71,7 @@ const Container = styled.div`
       .form {
         padding: 2rem;
         background-color: #000000b0;
-        width: 50vh;
+        width: 25vw;
         gap: 2rem;
         color: white;
         .container {
@@ -118,3 +95,5 @@ const Container = styled.div`
     }
   }
 `;
+
+export default Login;
