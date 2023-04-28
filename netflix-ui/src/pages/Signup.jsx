@@ -30,7 +30,7 @@ export default function Signup() {
               <button onClick={() => setShowPassword(true)}>Get Started</button>
             )}
           </div>
-          <button>Log In</button>
+          <button>Sign Up</button>
         </div>
       </div>
     </Container>
@@ -60,7 +60,7 @@ const Container = styled.div`
       }
       .form {
         display: grid;
-        /* grid-template-columns: ; */
+        grid-template-columns: ${({showPassword}) => showPassword ? "1fr 1fr" : "2fr 1fr"} ;
         width: 60%;
         input {
           color: black;
