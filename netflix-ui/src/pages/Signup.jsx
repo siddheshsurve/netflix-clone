@@ -7,6 +7,13 @@ import Header from '../components/Header';
 export default function Signup() {
 
   const [showPassword, setShowPassword] = useState(false);
+  const [formValues, setFormValues] = useState({
+    email : "",
+    password : "",
+  });
+  const handleSignIn = async ()=> {
+    console.log(formValues);
+  }
 
   return (
     <Container showPassword={showPassword}>
@@ -22,15 +29,37 @@ export default function Signup() {
             </h6>
           </div>
           <div className="form">
-            <input type="email" placeholder="Email Address" name="email" />
+            <input 
+              type="email" 
+              placeholder="Email Address" 
+              name="email" 
+              value={formValues.email} 
+              onChange= {(e) =>
+                setFormValues( {
+                  ...formValues,
+                  [e.target.name]: e.target.value,
+                })
+              }
+            />
             {showPassword && (
-              <input type="password" placeholder="Password" name="password" />
+              <input 
+                type="password" 
+                placeholder="Password" 
+                name="password" 
+                value= {formValues.password}
+                onChange={(e) =>
+                  setFormValues( {
+                    ...formValues,
+                    [e.target.name]: e.target.value,
+                  })
+                } 
+              />
             )}
             {!showPassword && (
               <button onClick={() => setShowPassword(true)}>Get Started</button>
             )}
           </div>
-          <button>Sign Up</button>
+          <button onClick={handleSignIn} >Sign Up</button>
         </div>
       </div>
     </Container>
